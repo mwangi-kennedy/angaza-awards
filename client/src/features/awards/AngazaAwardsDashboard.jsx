@@ -49,8 +49,7 @@ function Reveal({ children, delay = 0, className = '', variant = 'fade-up' }) {
     <div
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) ${getVariantStyle()} ${className}`}
-    >
+            className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${getVariantStyle()} ${className}`}    >
       {children}
     </div>
   );
@@ -215,45 +214,48 @@ const toggleFaq = (index) => {
         <span>2026 Nominations Window Open • Final Entry Deadline Closing Soon</span>
         <button onClick={() => setActiveTab('polls')} className="underline hover:text-white transition-colors">Nominate Now &rarr;</button>
       </div>
-
-      {/* 2. DYNAMIC STICKY HEADER */}
+{/* 2. DYNAMIC STICKY HEADER */}
       <header className={`sticky top-0 z-50 transition-all duration-500 border-b ${
         isScrolled 
           ? 'bg-black/90 border-[#D4AF37]/30 backdrop-blur-xl py-3 shadow-2xl shadow-[#D4AF37]/5' 
-          : 'bg-black/40 border-[#D4AF37]/10 backdrop-blur-md py-5'
+          : 'bg-black/40 border-[#D4AF37]/10 backdrop-blur-md py-4'
       }`}>
-        {/* Parent brand strip - links back to Angaza Hope Foundation */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-2 -mt-1">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-gray-500 hover:text-[#D4AF37] transition-colors"
-          >
-            <span aria-hidden="true">&larr;</span> Angaza Hope Foundation
-          </Link>
-        </div>
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
-          {/*LOGO */}
-          <div className="flex items-center space-x-3 cursor-pointer group" onClick={() => setActiveTab('home')}>
-            <div className="w-12 h-12 rounded-full border border-[#D4AF37] relative bg-black flex items-center justify-center p-1 shadow-lg shadow-[#D4AF37]/10 shrink-0 group-hover:scale-105 transition-transform duration-300">
+          {/* LEFT: LOGO WITH INTEGRATED FOUNDATION BREADCRUMB */}
+          <div className="flex items-center space-x-3.5">
+            {/* Logo Badge */}
+            <div 
+              className="w-11 h-11 rounded-full border border-[#D4AF37] relative bg-black flex items-center justify-center p-1 shadow-lg shadow-[#D4AF37]/10 shrink-0 cursor-pointer group hover:scale-105 transition-transform duration-300"
+              onClick={() => setActiveTab('home')}
+            >
               <div className="absolute inset-0.5 rounded-full border border-[#D4AF37]/30 pointer-events-none"></div>
               <div className="text-center font-serif font-black select-none leading-none">
-                <span className="block text-[9px] text-[#D4AF37] tracking-tighter">ANGAZA</span>
-                <span className="block text-[6px] text-[#D4AF37] tracking-[0.1em] mt-0.5">AWARDS</span>
+                <span className="block text-[8px] text-[#D4AF37] tracking-tighter">ANGAZA</span>
+                <span className="block text-[5px] text-[#D4AF37] tracking-[0.1em] mt-0.5">AWARDS</span>
               </div>
             </div>
-            <div>
-              <span className="block font-serif text-base font-bold bg-gradient-to-r from-white via-gray-200 to-[#D4AF37] bg-clip-text text-transparent uppercase tracking-wider">
+
+            {/* Title & Parent Link Stack */}
+            <div className="flex flex-col justify-center">
+              <Link 
+                to="/" 
+                className="inline-flex items-center gap-1 text-[9px] font-mono text-gray-400 hover:text-[#D4AF37] transition-colors uppercase tracking-widest font-semibold leading-tight group"
+                title="Return to Angaza Hope Foundation"
+              >
+                <span className="group-hover:-translate-x-0.5 transition-transform">&larr;</span> Angaza Hope Foundation
+              </Link>
+
+              <span 
+                onClick={() => setActiveTab('home')}
+                className="font-serif text-base font-bold bg-gradient-to-r from-white via-gray-200 to-[#D4AF37] bg-clip-text text-transparent uppercase tracking-wider cursor-pointer leading-tight mt-0.5"
+              >
                 Angaza Awards
-              </span>
-              <span className="block text-[9px] text-gray-400 tracking-widest font-mono uppercase">
-                Celebrating Excellence
               </span>
             </div>
           </div>
 
-          {/* MAIN NAV (ICONS ONLY) */}
+          {/* CENTER: MAIN NAV (ICONS ONLY) */}
           <nav className="hidden lg:flex items-center space-x-2">
             {navTabs.map((tab) => (
               <button
@@ -261,7 +263,7 @@ const toggleFaq = (index) => {
                 onClick={() => setActiveTab(tab.id)}
                 title={tab.label}
                 aria-label={tab.label}
-                className={`p-3 rounded-xl transition-all duration-300 relative group flex items-center justify-center ${
+                className={`p-2.5 rounded-xl transition-all duration-300 relative group flex items-center justify-center ${
                   activeTab === tab.id 
                     ? 'text-black bg-[#D4AF37] shadow-lg shadow-[#D4AF37]/20 scale-105' 
                     : 'text-gray-400 hover:text-[#D4AF37] hover:bg-white/5'
@@ -275,7 +277,7 @@ const toggleFaq = (index) => {
             ))}
           </nav>
           
-          {/* TOP RIGHT CTA */}
+          {/* RIGHT: TOP CTA BUTTON */}
           <div className="hidden xl:block">
             <button 
               onClick={() => setActiveTab('polls')}
@@ -546,14 +548,15 @@ const toggleFaq = (index) => {
                               </a>
 
                             <div className="space-y-6 text-sm sm:text-base text-gray-300 leading-relaxed font-light">
-                              <p className="text-base sm:text-lg text-gray-200 leading-relaxed font-normal">
-                                The <b>Angaza® Awards</b>are Africa’s premier business awards. They were created to honor and generate public recognition of the achievements and positive contributions of organizations and working professionals worldwide.
-                              </p>
+                               <p className="text-base sm:text-lg text-gray-200 leading-relaxed font-normal">
+                                The <b>Angaza® Awards</b>  were created to honor and generate public recognition of the achievements and positive contributions of organizations and working professionals worldwide.</p>
+                              
                               <div className="space-y-4 pt-2">
                                 {angazaPrograms.map((prog, idx) => (
                                   <div key={idx} className="bg-black/60 border-l-4 border-[#D4AF37] p-4 rounded-r-lg border-y border-r border-gray-800 hover:border-gray-700 transition-colors">
                                     <h4 className="text-base font-bold text-white font-serif uppercase">{prog.title}</h4>
-                                    <p className="text-xs sm:text-sm text-gray-400 mt-1">{prog.desc}</p>
+                                    <p className="text-xs sm:text-sm text-gray-400 mt-1">{prog.focus}</p>
+                                    <span className="text-[10px] font-mono text-[#D4AF37] block mt-1">Scope: {prog.scope}</span>
                                   </div>
                                 ))}
                               </div>
@@ -972,7 +975,7 @@ const toggleFaq = (index) => {
           
           <div className="space-y-3">
             <Link to="/" className="inline-block font-serif text-base font-bold text-white uppercase tracking-wider hover:text-[#D4AF37] transition-colors">
-              Angaza Hope Foundation
+              Angaza Awards
             </Link>
             <p className="text-xs text-gray-400 leading-relaxed max-w-sm">
               The Angaza Awards is a flagship program of the Angaza Hope Foundation, dedicated to celebrating business longevity, service delivery innovations and transparent regional acceleration programs.

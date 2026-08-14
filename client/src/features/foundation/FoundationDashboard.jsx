@@ -631,7 +631,7 @@ const handleContactSubmit = async (e) => {
                             Moments of Recognition
                           </span>
                           <p className="text-sm text-white font-semibold mt-1">
-                            Celebrating excellence at the Angaza Awards
+                            Celebrating excellence at Angaza
                           </p>
                         </div>
                       </div>
