@@ -1,0 +1,20 @@
+{
+  "name": "angaza-awards",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Angaza Awards - Full-stack web application",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "npm --prefix server run dev",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server run start",
+    "lint": "npm --prefix client run lint && npm --prefix server run lint",
+    "seed": "npm --prefix server run seed",
+    "setup": "npm install && npm --prefix client install && npm --prefix server install",
+    "clean": "rm -rf node_modules client/node_modules server/node_modules client/dist"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
