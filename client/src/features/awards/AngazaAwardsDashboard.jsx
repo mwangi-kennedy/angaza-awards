@@ -81,6 +81,10 @@ export default function AngazaAwardsDashboard() {
     email: "angazaawardskenya@gmail.com"
   };
 
+const [email, setEmail] = useState('');
+const [subscribed, setSubscribed] = useState(false);
+const [isSubmitting, setIsSubmitting] = useState(false);
+
   const navTabs = [
     { id: 'home', label: 'Home', icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,12 +156,50 @@ export default function AngazaAwardsDashboard() {
     }
   ];
 
-  const categories = [
-    { title: "Fast Moving Consumer Goods", icon: "🛒", code: "fmcg", desc: "Recognizing market reach, product excellence, and brand sustainability." },
-    { title: "Digital & Tech Advancement", icon: "⚡", code: "tech", desc: "Honoring platforms driving technological disruption and digital adoption." },
-    { title: "Service Delivery Excellence", icon: "🏛️", code: "service", desc: "Celebrating consumer trust, retention, and operational standards." },
-    { title: "Visionary Leader of the Year", icon: "👑", code: "ceo", desc: "Spotlighting CEOs and founders shaping regional economic growth." }
-  ];
+// Inside AngazaAwardsDashboard()
+const [showAllCategories, setShowAllCategories] = useState(false);
+
+const homeFeaturedCategories = [
+  { 
+    title: "Company Brand of the Year", 
+    icon: "🏢", 
+    code: "company_brand", 
+    desc: "Honoring outstanding corporate presence, customer loyalty, and brand influence." 
+  },
+  { 
+    title: "Talent to Watch of the Year", 
+    icon: "🚀", 
+    code: "talent_to_watch", 
+    desc: "Recognizing rising individuals making major breakthroughs in their respective fields." 
+  },
+  { 
+    title: "PWD Icon of the Year", 
+    icon: "🌟", 
+    code: "pwd_icon", 
+    desc: "Celebrating inspirational leaders championing inclusion, accessibility, and empowerment." 
+  },
+  { 
+    title: "Comedian of the Year", 
+    icon: "🎭", 
+    code: "comedian", 
+    desc: "Spotlighting exceptional comedic talent driving culture and top-tier entertainment." 
+  }
+];
+const categories = [
+  { title: "Environmentalist of the Year", icon: "🌱", code: "env", desc: "Recognizing market reach, product excellence, and brand sustainability." },
+  { title: "Realtor of the Year", icon: "🏡", code: "estate", desc: "Honoring platforms driving technological disruption and digital adoption." },
+  { title: "Service Delivery Excellence", icon: "🏛️", code: "service", desc: "Celebrating consumer trust, retention, and operational standards." },
+  { title: "Visionary Leader of the Year", icon: "👑", code: "ceo", desc: "Spotlighting CEOs and founders shaping regional economic growth." },
+  { title: "Company Brand of the Year", icon: "🏢", code: "company_brand", desc: "Honoring outstanding corporate presence, customer loyalty, and brand influence." },
+  { title: "Talent to Watch of the Year", icon: "🚀", code: "talent_to_watch", desc: "Recognizing rising individuals making major breakthroughs in their respective fields." },
+  { title: "PWD Icon of the Year", icon: "🌟", code: "pwd_icon", desc: "Celebrating inspirational leaders championing inclusion, accessibility, and empowerment." },
+  { title: "Comedian of the Year", icon: "🎭", code: "comedian", desc: "Spotlighting exceptional comedic talent driving culture and top-tier entertainment." },
+  { title: "Model of the Year", icon: "✨", code: "model", desc: "Celebrating excellence in fashion, poise, and brand representation." },
+  { title: "Caterer of the Year", icon: "🍽️", code: "caterer", desc: "Honoring culinary excellence, event hospitality, and service standards." },
+  { title: "DJ of the Year", icon: "🎧", code: "dj", desc: "Recognizing musical curation, crowd engagement, and entertainment leadership." },
+  { title: "Media Personality of the Year", icon: "🎙️", code: "media", desc: "Spotlighting influential voices across broadcast, journalism, and digital media." }
+];
+
 
   const upcomingEvents = [
     {
@@ -342,7 +384,7 @@ const toggleFaq = (index) => {
                   </h1>
 
                   <p className="text-sm sm:text-base text-gray-200 leading-relaxed max-w-2xl mx-auto font-light drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-                    Independent, objective assessments celebrating market leadership, operational integrity, customer value  and social impact across sectors.
+                    Independent, objective assessments celebrating market leadership, operational integrity, customer value and social impact across sectors.
                   </p>
 
                   <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
@@ -353,7 +395,7 @@ const toggleFaq = (index) => {
                       Submit Nomination Entry &rarr;
                     </button>
                     <button 
-                      onClick={() => setActiveTab('about')}
+                      onClick={() => setActiveTab('categories')}
                       className="px-7 py-3.5 bg-black/80 border border-gray-700 hover:border-[#D4AF37]/50 text-gray-200 font-mono font-bold text-xs uppercase tracking-widest rounded-lg backdrop-blur-md transition-all hover:-translate-y-1"
                     >
                       Explore Framework
@@ -370,7 +412,7 @@ const toggleFaq = (index) => {
               </Reveal>
             </div>
 
-            {/* CATEGORIES GRID */}
+            {/* CATEGORIES GRID (DISPLAYING THE 4 SPOTLIGHT HOMEPAGE CATEGORIES) */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <Reveal className="flex flex-col md:flex-row md:items-end justify-between mb-10">
                 <div>
@@ -386,8 +428,33 @@ const toggleFaq = (index) => {
               </Reveal>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {categories.map((cat, i) => (
-                  <Reveal key={i} variant="scale-up" delay={i * 150}>
+                {[
+                  { 
+                    title: "Company Brand of the Year", 
+                    icon: "🏢", 
+                    code: "company_brand", 
+                    desc: "Honoring outstanding corporate presence, customer loyalty, and brand influence." 
+                  },
+                  { 
+                    title: "Talent to Watch of the Year", 
+                    icon: "🚀", 
+                    code: "talent_to_watch", 
+                    desc: "Recognizing rising individuals making major breakthroughs in their respective fields." 
+                  },
+                  { 
+                    title: "PWD Icon of the Year", 
+                    icon: "🌟", 
+                    code: "pwd_icon", 
+                    desc: "Celebrating inspirational leaders championing inclusion, accessibility, and empowerment." 
+                  },
+                  { 
+                    title: "Comedian of the Year", 
+                    icon: "🎭", 
+                    code: "comedian", 
+                    desc: "Spotlighting exceptional comedic talent driving culture and top-tier entertainment." 
+                  }
+                ].map((cat, i) => (
+                  <Reveal key={cat.code || i} variant="scale-up" delay={i * 150}>
                     <div className="bg-[#111112] border border-gray-800/80 p-6 rounded-xl hover:border-[#D4AF37]/60 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-[#D4AF37]/10 flex flex-col justify-between group h-full">
                       <div>
                         <div className="text-3xl mb-4 group-hover:scale-125 transition-transform duration-300">{cat.icon}</div>
@@ -406,6 +473,16 @@ const toggleFaq = (index) => {
                     </div>
                   </Reveal>
                 ))}
+              </div>
+
+              {/* ACTION BUTTON TO DIRECT USERS TO CATEGORIES TAB */}
+              <div className="mt-10 text-center">
+                <button
+                  onClick={() => setActiveTab('categories')}
+                  className="px-8 py-3.5 bg-black/80 border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-all duration-300 font-mono text-xs font-bold uppercase tracking-widest rounded-lg shadow-xl shadow-[#D4AF37]/10 hover:scale-105 active:scale-95"
+                >
+                  Explore All Categories &rarr;
+                </button>
               </div>
             </section>
 
@@ -456,7 +533,7 @@ const toggleFaq = (index) => {
                   <span className="text-gray-600">•</span>
                   <span>#BrandQualityExcellence</span>
                 </div>
-              </Reveal>
+              </Reveal> 
             </div>
 
           </div>
@@ -693,28 +770,223 @@ const toggleFaq = (index) => {
                         )}
 
                         {/* 5. NEWSLETTER CONTENT */}
-                        {aboutSubTab === 'newsletter' && (
-                          <div className="space-y-8 animate-fade-in">
-                            <div className="border-b border-gray-800 pb-4">
-                              <h1 className="text-3xl sm:text-5xl font-serif font-black text-white tracking-tight">
-                                The <span className="text-[#D4AF37]">Newsletter</span>
-                              </h1>
-                            </div>
-                            <div className="bg-black/50 border border-gray-800 p-8 rounded-xl max-w-xl">
-                              <h3 className="text-xl font-bold text-white mb-2">Stay Ahead of Deadlines</h3>
-                              <p className="text-gray-400 text-sm mb-6">Subscribe to receive immediate updates on submission extensions, judging announcements, and gala ticketing.</p>
-                              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                                <div>
-                                  <label className="block text-xs uppercase font-bold text-gray-500 mb-2">Corporate Email</label>
-                                  <input type="email" className="w-full bg-black border border-gray-700 rounded p-3 text-sm text-white focus:border-[#D4AF37] outline-none" placeholder="name@company.com" />
-                                </div>
-                                <button type="submit" className="w-full bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-widest py-3 rounded hover:bg-white transition-colors">
-                                  Subscribe Now
-                                </button>
-                              </form>
-                            </div>
-                          </div>
-                        )}
+{aboutSubTab === 'newsletter' && (
+  <div className="space-y-10 animate-fade-in w-full max-w-6xl mx-auto">
+    
+    {/* HEADER SECTION */}
+    <div className="border-b border-gray-800 pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span className="text-xs font-mono text-[#D4AF37] uppercase tracking-widest block mb-1.5">
+          Stay Informed & Connected
+        </span>
+        <h1 className="text-3xl sm:text-5xl font-serif font-black text-white tracking-tight uppercase leading-tight">
+          Angaza <span className="text-[#D4AF37]">Insights & Dispatch</span>
+        </h1>
+      </div>
+      <div className="inline-flex items-center gap-2 text-xs font-mono text-gray-300 bg-[#111112] border border-gray-800 px-4 py-2 rounded-lg self-start sm:self-auto shadow-sm">
+        <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse"></span>
+        <span>Published Bi-Weekly</span>
+      </div>
+    </div>
+
+    {/* TWO-COLUMN GRID */}
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      {/* LEFT COLUMN: SUBSCRIPTION CARD (5 Cols) */}
+      <div className="lg:col-span-5 bg-[#111112] border border-[#D4AF37]/30 p-6 sm:p-8 rounded-2xl relative overflow-hidden shadow-2xl flex flex-col justify-between space-y-6">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-[#D4AF37]/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="space-y-4">
+          <span className="inline-block px-3 py-1 bg-[#D4AF37]/10 text-[#D4AF37] text-[10px] font-mono uppercase tracking-widest rounded-full border border-[#D4AF37]/20">
+            Official Bulletin
+          </span>
+          <h3 className="text-2xl font-serif font-bold text-white uppercase tracking-wide leading-snug">
+            Never Miss an Award Milestone
+          </h3>
+          <p className="text-xs text-gray-400 font-light leading-relaxed">
+            Get direct alerts on nomination deadlines, vetting announcements, VIP gala ticket releases, and winner spotlights.
+          </p>
+
+          {/* PERKS LIST */}
+          <ul className="space-y-2.5 text-xs text-gray-300 pt-2 border-t border-gray-800/80">
+            <li className="flex items-start gap-2.5">
+              <span className="text-[#D4AF37] text-sm leading-none">•</span>
+              <span>Priority notifications for jury shortlists</span>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <span className="text-[#D4AF37] text-sm leading-none">•</span>
+              <span>Exclusive gala seating & early bird pass codes</span>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <span className="text-[#D4AF37] text-sm leading-none">•</span>
+              <span>Monthly corporate leadership case studies</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* DYNAMIC FORM / SUCCESS STATE */}
+        <div className="pt-2">
+          {subscribed ? (
+            <div className="bg-black/90 border border-[#D4AF37] p-6 rounded-xl text-center space-y-3 animate-fade-in shadow-xl">
+              <div className="text-3xl">🎉</div>
+              <h4 className="text-sm font-serif font-bold text-white uppercase tracking-wider">
+                You're on the VIP List
+              </h4>
+              <p className="text-xs text-gray-400 leading-relaxed">
+                We sent a confirmation link to <br />
+                <span className="text-[#D4AF37] font-mono break-all">{email || "your email"}</span>.
+              </p>
+              <button 
+                onClick={() => setSubscribed(false)}
+                className="text-[10px] font-mono text-[#D4AF37] hover:underline uppercase tracking-wider pt-2 inline-block"
+              >
+                Register another email
+              </button>
+            </div>
+          ) : (
+            <form 
+              className="space-y-4" 
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!email) return;
+                setIsSubmitting(true);
+                setTimeout(() => {
+                  setIsSubmitting(false);
+                  setSubscribed(true);
+                }, 800);
+              }}
+            >
+              <div>
+                <label className="block text-[10px] font-mono uppercase tracking-widest font-bold text-gray-400 mb-1.5">
+                  Corporate Email Address
+                </label>
+                <input 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full bg-black border border-gray-800 rounded-lg p-3 text-xs text-white focus:border-[#D4AF37] outline-none transition-colors" 
+                  placeholder="name@company.com" 
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-mono uppercase tracking-widest font-bold text-gray-400 mb-1.5">
+                  Primary Interest Segment
+                </label>
+                <select className="w-full bg-black border border-gray-800 rounded-lg p-3 text-xs text-gray-300 focus:border-[#D4AF37] outline-none transition-colors">
+                  <option>Corporate Brand & Entry Deadline Alerts</option>
+                  <option>Gala Tickets & Sponsorship Opportunities</option>
+                  <option>Media, Press & Winner Announcements</option>
+                </select>
+              </div>
+
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full bg-[#D4AF37] hover:bg-[#b8962f] text-black font-mono font-bold text-xs uppercase tracking-widest py-3.5 rounded-lg transition-all duration-300 shadow-lg shadow-[#D4AF37]/10 hover:scale-[1.01] active:scale-95 disabled:opacity-50"
+              >
+                {isSubmitting ? "Processing..." : "Subscribe to Dispatch →"}
+              </button>
+
+              <p className="text-[10px] text-gray-500 text-center leading-normal">
+                🔒 Zero spam. Unsubscribe at any time.
+              </p>
+            </form>
+          )}
+        </div>
+
+      </div>
+
+      {/* RIGHT COLUMN: ARCHIVE & ANNOUNCEMENTS (7 Cols) */}
+      <div className="lg:col-span-7 space-y-6">
+        <div className="flex items-center justify-between border-b border-gray-800 pb-3">
+          <h3 className="text-xs font-mono uppercase tracking-widest text-white font-bold">
+            Recent Editions & Announcements
+          </h3>
+          <button className="text-[10px] font-mono text-[#D4AF37] hover:underline uppercase tracking-wider">
+            Archive Search
+          </button>
+        </div>
+
+        {/* DISPATCH LIST */}
+        <div className="space-y-4">
+          {[
+            {
+              edition: "Issue #014",
+              date: "August 2026",
+              title: "Judicial Vetting Framework & Entry Extension Guidelines",
+              summary: "A deep dive into this year's brand governance scoring system and key criteria for competitive entries.",
+              tag: "Vetting"
+            },
+            {
+              edition: "Issue #013",
+              date: "July 2026",
+              title: "Angaza Gala Keynote Speaker & Venue Unveiling",
+              summary: "Announcing our host location, VIP seating arrangements, and early bird table reservations.",
+              tag: "Gala Event"
+            },
+            {
+              edition: "Issue #012",
+              date: "June 2026",
+              title: "Spotlight: Lessons from Last Year's Brand Quality Winners",
+              summary: "Interviews with corporate leaders on how regional recognition accelerated market expansion.",
+              tag: "Leadership"
+            }
+          ].map((issue) => (
+            <div 
+              key={issue.edition}
+              className="bg-[#111112] border border-gray-800/80 hover:border-[#D4AF37]/50 p-5 rounded-xl transition-all duration-300 hover:-translate-y-0.5 group flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono text-[#D4AF37] font-bold">{issue.edition}</span>
+                    <span className="text-gray-600 text-xs">•</span>
+                    <span className="text-[10px] font-mono text-gray-500">{issue.date}</span>
+                  </div>
+                  <span className="px-2 py-0.5 bg-black border border-gray-800 text-gray-400 text-[9px] font-mono uppercase rounded">
+                    {issue.tag}
+                  </span>
+                </div>
+
+                <h4 className="text-sm font-serif font-bold text-white group-hover:text-[#D4AF37] transition-colors leading-snug">
+                  {issue.title}
+                </h4>
+
+                <p className="text-xs text-gray-400 mt-2 line-clamp-2 font-light leading-relaxed">
+                  {issue.summary}
+                </p>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-gray-800/60 flex items-center justify-between text-[10px] font-mono text-[#D4AF37]">
+                <span className="group-hover:underline">Read Full Issue</span>
+                <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* SOCIAL PROOF FOOTER */}
+        <div className="bg-[#111112] border border-gray-800/80 p-4 rounded-xl flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-2">
+              <div className="w-7 h-7 rounded-full bg-[#D4AF37] text-black text-[9px] font-mono font-bold flex items-center justify-center border border-black">CEO</div>
+              <div className="w-7 h-7 rounded-full bg-gray-800 text-white text-[9px] font-mono font-bold flex items-center justify-center border border-black">PR</div>
+              <div className="w-7 h-7 rounded-full bg-black text-[#D4AF37] text-[9px] font-mono font-bold flex items-center justify-center border border-gray-700">HQ</div>
+            </div>
+            <p className="text-xs text-gray-400 font-light">
+              Joined by <span className="text-white font-bold">1,200+</span> industry leaders & executives.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
 
                         {/* 6. CONTACT CONTENT */}
                         {aboutSubTab === 'contact' && (
@@ -844,42 +1116,75 @@ const toggleFaq = (index) => {
                   </div>
                 )}
 
-                {/* CATEGORIES TAB */}
                 {activeTab === 'categories' && (
-                  <div className="space-y-6">
-                    <div className="border-b border-gray-800 pb-4">
-                      <h3 className="text-xl font-bold font-serif text-white uppercase tracking-wider">Award Categories & Tracks</h3>
-                      <p className="text-xs text-gray-400 mt-1">Explore specialized tracks for corporate brands and individual leaders.</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                      {categories.map((cat, i) => (
-                        <div key={i} className="bg-black/50 border border-gray-800 p-6 rounded-xl hover:border-[#D4AF37]/40 transition-all flex flex-col justify-between">
-                          <div>
-                            <div className="flex items-center space-x-3 mb-3">
-                              <span className="text-3xl p-2 bg-[#111] rounded-lg border border-gray-800">{cat.icon}</span>
-                              <div>
-                                <h4 className="text-base font-bold font-serif text-white uppercase">{cat.title}</h4>
-                                <span className="text-[10px] font-mono text-[#D4AF37] uppercase tracking-widest">Track Ref: {cat.code}</span>
-                              </div>
-                            </div>
-                            <p className="text-xs text-gray-400 leading-relaxed mt-2">{cat.desc}</p>
-                          </div>
-                          <div className="pt-6 border-t border-gray-900 mt-4 flex items-center justify-between">
-                            <span className="text-[11px] text-gray-500 font-mono">Status: Intake Open</span>
-                            <button
-                              onClick={() => {
-                                setNomineeCategory(cat.code);
-                                setActiveTab('polls');
-                              }}
-                              className="px-4 py-2 bg-[#D4AF37] text-black font-mono font-bold text-[10px] uppercase tracking-widest rounded hover:bg-white transition-colors"
-                            >
-                              Nominate Now &rarr;
-                            </button>
-                          </div>
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+                    
+                    {/* HEADER */}
+                    <Reveal variant="scale-up">
+                      <div className="border-b border-gray-800/80 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <div>
+                          <span className="text-xs font-mono text-[#D4AF37] uppercase tracking-widest block mb-1">
+                            Complete Recognition Index
+                          </span>
+                          <h2 className="text-3xl font-serif font-bold text-white uppercase tracking-wide">
+                            Award Categories & Tracks
+                          </h2>
+                          <p className="text-xs text-gray-400 mt-1 max-w-xl">
+                            Explore sector-specific nomination entries spanning enterprise brands, digital innovators, and influential individual leaders.
+                          </p>
                         </div>
+                        <div className="px-4 py-2 bg-[#111] border border-[#D4AF37]/30 rounded-lg text-xs font-mono text-[#D4AF37] self-start md:self-auto">
+                          Total Tracks: <span className="font-bold text-white">{categories.length}</span>
+                        </div>
+                      </div>
+                    </Reveal>
+
+                    {/* ANIMATED CATEGORIES GRID */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {categories.map((cat, i) => (
+                        <Reveal key={cat.code} variant="scale-up" delay={(i % 3) * 120}>
+                          <div className="relative group bg-gradient-to-b from-[#141416] to-[#0c0c0d] border border-gray-800/80 hover:border-[#D4AF37] p-7 rounded-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(212,175,55,0.15)] flex flex-col justify-between h-full overflow-hidden">
+                            
+                            {/* Background Glow Effect on Hover */}
+                            <div className="absolute -top-12 -right-12 w-32 h-32 bg-[#D4AF37]/10 rounded-full blur-2xl group-hover:bg-[#D4AF37]/25 transition-all duration-500 pointer-events-none" />
+
+                            <div>
+                              {/* Category Icon with Bounce/Scale Animation */}
+                              <div className="w-14 h-14 rounded-xl bg-black/60 border border-gray-800 group-hover:border-[#D4AF37]/50 flex items-center justify-center text-3xl mb-5 shadow-inner group-hover:scale-110 transition-transform duration-300">
+                                {cat.icon}
+                              </div>
+
+                              <span className="text-[10px] font-mono uppercase tracking-widest text-[#D4AF37]/70 group-hover:text-[#D4AF37] transition-colors">
+                                Track Code: {cat.code}
+                              </span>
+
+                              <h3 className="text-lg font-serif font-bold text-white uppercase tracking-wide mt-1 group-hover:text-[#D4AF37] transition-colors duration-300">
+                                {cat.title}
+                              </h3>
+
+                              <p className="text-xs text-gray-400 mt-3 leading-relaxed font-light">
+                                {cat.desc}
+                              </p>
+                            </div>
+
+                            <div className="pt-6 mt-6 border-t border-gray-800/50 flex items-center justify-between">
+                              <button
+                                onClick={() => {
+                                  setNomineeCategory(cat.code);
+                                  setActiveTab('polls');
+                                }}
+                                className="w-full py-2.5 px-4 bg-black/80 hover:bg-[#D4AF37] text-[#D4AF37] hover:text-black border border-[#D4AF37]/30 hover:border-[#D4AF37] font-mono text-[11px] font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group/btn"
+                              >
+                                <span>Submit Entry</span>
+                                <span className="group-hover/btn:translate-x-1 transition-transform">&rarr;</span>
+                              </button>
+                            </div>
+
+                          </div>
+                        </Reveal>
                       ))}
                     </div>
+
                   </div>
                 )}
 
@@ -918,10 +1223,11 @@ const toggleFaq = (index) => {
                             required
                           >
                             <option value="">Select an entry segment...</option>
-                            <option value="fmcg">Fast Moving Consumer Goods Track</option>
-                            <option value="tech">Digital & Technology Advancement</option>
-                            <option value="service">Service Delivery Excellence</option>
-                            <option value="ceo">Visionary Corporate Leader of the Year</option>
+                            {categories.map((cat) => (
+                              <option key={cat.code} value={cat.code}>
+                                {cat.title} ({cat.code})
+                              </option>
+                            ))}
                           </select>
                         </div>
                         <button 
